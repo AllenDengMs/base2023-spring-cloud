@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  <changeSet author="weBase2023" id="202308191024">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="t_user_login_info"/>
+      </not>
+    </preConditions>
+    <createTable tableName="t_user_login_info" remarks="用户登陆信息表">
+      <column name="session_id" remarks="会话id" type="BIGINT">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="user_id" remarks="用户id" type="BIGINT"/>
+      <column name="username" remarks="登陆账号名" type="VARCHAR(63)"/>
+      <column name="nickname" remarks="用户昵称" type="VARCHAR(63)"/>
+      <column name="status" remarks="登陆状态，0:下线（强制下线/退出登陆/jwt过期）,1:在线" type="TINYINT"/>
+      <column name="login_time" remarks="登陆时间，时间戳" type="BIGINT"/>
+      <column name="update_time" remarks="刷新jwt时间，时间戳" type="BIGINT"/>
+      <column name="expired_time" remarks="jwt过期时间，时间戳" type="BIGINT"/>
+      <column name="ip" remarks="登陆ip" type="VARCHAR(63)"/>
+      <column name="ip_geolocation" remarks="IP归属地" type="VARCHAR(63)"/>
+    </createTable>
+  </changeSet>
+
+  <!-- 创建索引 -->
+  <changeSet author="weBase2023" id="202308191051">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <indexExists indexName="idx_user_login_info_expired_time" tableName="t_user_login_info"/>
+      </not>
+    </preConditions>
+    <createIndex indexName="idx_user_login_info_expired_time" tableName="t_user_login_info">
+      <column name="expired_time" descending="true"/>
+    </createIndex>
+  </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,72 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  <changeSet author="weBase2023" id="202308101432">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="t_user"/>
+      </not>
+    </preConditions>
+    <createTable tableName="t_user" remarks="用户信息表">
+      <column name="user_id" remarks="用户ID" autoIncrement="true" type="BIGINT">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="username" remarks="登录账号" type="VARCHAR(31)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="nickname" remarks="用户昵称" type="VARCHAR(31)"/>
+      <column name="user_type" remarks="用户类型（0系统用户 1注册用户）" defaultValue="0"
+        type="TINYINT(4)"/>
+      <column name="email" remarks="用户邮箱" type="VARCHAR(63)"/>
+      <column name="phone" remarks="手机号码" type="VARCHAR(31)">
+        <constraints unique="true"/>
+      </column>
+      <column name="gender" remarks="用户性别（0未知 1男 2女）" defaultValue="0" type="TINYINT(1)"/>
+      <column name="avatar" remarks="头像路径" type="VARCHAR(255)"/>
+      <column name="password" remarks="密码" type="VARCHAR(63)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="password_salt" remarks="盐加密" type="VARCHAR(32)"/>
+      <column name="status" remarks="帐号状态（0停用 1正常）" defaultValue="1" type="TINYINT(4)"/>
+      <column name="latest_login_ip" remarks="最后登录IP" type="VARCHAR(63)"/>
+      <column name="operator_user_id" remarks="操作数据者" defaultValue="0" type="BIGINT"/>
+      <column name="latest_login_time" remarks="最后登录时间" type="DATETIME"/>
+      <column name="latest_pwd_update_time" remarks="密码最后更新时间" type="DATETIME"/>
+      <column name="create_time" remarks="创建时间" type="DATETIME"/>
+      <column name="update_time" remarks="更新时间" type="DATETIME"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="202308101432-2" author="weBase2023">
+    <preConditions onFail="MARK_RAN">
+      <tableExists tableName="t_user"/>
+    </preConditions>
+    <sql>
+      INSERT INTO t_user (user_id, username, nickname, user_type, email, phone,
+                          gender, avatar, password, password_salt, status,
+                          latest_login_ip, operator_user_id, latest_login_time,
+                          latest_pwd_update_time, create_time, update_time)
+      VALUES (1, 'super', 'Ellie', 0, 'ellie@gmail.com', '+86-13800138000', 2, NULL,
+              '$2a$10$7qlrvZ0XtzTfmGhyLrvHq.IYYdiPOZGf.JfQHVAuycyBGPa6BpnaG',
+              'f7fdc2f4582243848739719c6626c044', 1, NULL, NULL, NULL, NULL, '2023-08-11 17:27:19',
+              '2023-08-11 17:27:19');
+      INSERT INTO t_user (user_id, username, nickname, user_type, email, phone,
+                          gender, avatar, password, password_salt, status,
+                          latest_login_ip, operator_user_id, latest_login_time,
+                          latest_pwd_update_time, create_time, update_time)
+      VALUES (2, 'admin', 'Joel', 0, 'joel@gmail.com', '+86-13800138001', 2, NULL,
+              '$2a$10$tITDC0fo6kF5acim3StCheZnFDWdCmmGnBEh8pfU5bP.q2kGyuGam',
+              'abc123', 1, NULL, NULL, NULL, NULL, '2023-08-11 17:27:19',
+              '2023-08-11 17:27:19');
+      INSERT INTO t_user (user_id, username, nickname, user_type, email, phone,
+                          gender, avatar, password, password_salt, status,
+                          latest_login_ip, operator_user_id, latest_login_time,
+                          latest_pwd_update_time, create_time, update_time)
+      VALUES (3, 'user1', 'Mike', 0, 'mike@gmail.com', '+86-13800138002', 2, NULL,
+              '$2a$10$JDr6BsFHPS9OwyPmEykbmOFcsh0RHpgWJ18D8s8WvOOg.IJmtefZ6',
+              'abc123', 1, NULL, NULL, NULL, NULL, '2023-08-11 17:27:19',
+              '2023-08-11 17:27:19');
+    </sql>
+  </changeSet>
+</databaseChangeLog>

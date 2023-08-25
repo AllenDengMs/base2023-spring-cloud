@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.backend.cloud.authentication.mapper.LoginInfoMapper">
+  <insert id="insertUserLoginInfo">
+    INSERT INTO t_user_login_info (session_id, user_id, username, nickname, status, login_time,
+                                   update_time, expired_time, ip, ip_geolocation)
+    VALUES (#{sessionId}, #{userId}, #{username}, #{nickname}, #{status}, #{loginTime},
+            #{updateTime}, #{expiredTime}, #{ip}, #{ipGeolocation})
+  </insert>
+
+  <update id="updateUserLoginInfo">
+    update t_user_login_info
+    set <if test="status != null">status = #{status},</if>
+        <if test="expiredTime != null">expired_time = #{expiredTime},</if>
+        update_time = #{updateTime}
+    where session_id = #{sessionId}
+  </update>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.backend.cloud.user.mapper.RoleMapper">
+
+  <!--新增数据-->
+  <insert id="addRole">
+    insert into t_role(role_id, role_name, update_time, create_time)
+    values (#{roleId}, #{roleName}, #{updateTime}, #{createTime})
+  </insert>
+
+  <insert id="roleBindResourcePermissions">
+    insert into t_role_resource_permission(role_id,permission_id,create_time)
+    values
+    <foreach collection="permissions" item="entity" separator=",">
+      (#{entity.roleId},#{entity.permissionId},#{entity.createTime})
+    </foreach>
+  </insert>
+
+  <insert id="roleBindUiPermissions">
+    insert into t_role_ui_permission(role_id, permissions, create_time)
+    values (#{roleId},
+            #{permissions,typeHandler=org.backend.cloud.database.mybatis.handler.MapTypeHandler},
+            #{createTime})
+  </insert>
+
+  <insert id="bindUser">
+    insert into t_user_role(role_id, user_id, create_time)
+    values (#{roleId}, #{userId}, #{createTime})
+  </insert>
+
+  <insert id="addResourcePermission">
+    INSERT INTO t_resource_permission (permission_id, path, method, remarks, operator_user_id,
+                                       create_time)
+    VALUES (#{permissionId}, #{path}, #{method}, #{remarks}, #{operatorUserId}, #{createTime})
+  </insert>
+
+  <update id="updateRole">
+    update t_role
+    <set>
+      <if test="roleName != null and roleName != ''">
+        role_name = #{roleName},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    where role_id = #{roleId}
+  </update>
+
+  <delete id="deleteResourcePermissionByRoleId">
+    delete
+    from t_role_resource_permission
+    where role_id = #{roleId}
+  </delete>
+
+  <delete id="deleteUiPermissionByRoleId">
+    delete
+    from t_role_ui_permission
+    where role_id = #{roleId}
+  </delete>
+
+  <delete id="deleteUserRoles">
+    delete
+    from t_user_role
+    where user_id = #{userId}
+  </delete>
+
+  <select id="findAllRoles" resultType="org.backend.cloud.user.model.entity.Role">
+    select * from t_role where display = 1
+  </select>
+
+  <select id="getRoleUiPermissionByRoleId" resultMap="roleUiPermissionResultMap">
+    select *
+    from t_role_ui_permission
+    where role_id = #{roleId}
+  </select>
+
+  <select id="existsRole" resultType="java.lang.Boolean">
+    select count(*) > 0
+    from t_role
+    where role_id = #{roleId}
+  </select>
+  <select id="getResourcePermissionByPath"
+    resultType="org.backend.cloud.user.model.entity.ResourcePermission">
+    select *
+    from t_resource_permission
+    where method = #{method}
+      and path = #{path}
+  </select>
+
+  <select id="getUserRoleIdByUserId" resultType="java.lang.String">
+    select role_id
+    from t_user_role
+    where user_id = #{userId}
+  </select>
+
+  <select id="hasPermissionOnPath" resultType="java.lang.Boolean">
+    select count(*) > 0
+    from t_role_resource_permission rp
+           LEFT JOIN t_resource_permission p on rp.permission_id = p.permission_id
+    where rp.role_id = #{roleId}
+      and p.path = #{path}
+      and p.method = #{method}
+  </select>
+
+  <resultMap id="roleUiPermissionResultMap"
+    type="org.backend.cloud.user.model.entity.RoleUiPermission">
+    <result column="permissions" property="permissions"
+      typeHandler="org.backend.cloud.database.mybatis.handler.MapTypeHandler"/>
+  </resultMap>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  <changeSet author="weBase2023" id="202308142110">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="t_resource_permission"/>
+      </not>
+    </preConditions>
+    <createTable tableName="t_resource_permission" remarks="服务器端API权限表">
+      <column name="permission_id" remarks="权限标识" type="VARCHAR(63)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="path" remarks="api访问路径" type="VARCHAR(255)">
+        <constraints nullable="false" unique="true"
+          uniqueConstraintName="uidx_t_resource_permission_path"/>
+      </column>
+      <column name="method" remarks="GET、POST、PUT、DELETE" type="VARCHAR(15)">
+        <constraints nullable="false" unique="true"
+          uniqueConstraintName="uidx_t_resource_permission_path"/>
+      </column>
+      <column name="remarks" remarks="备注" type="VARCHAR(255)"/>
+      <column name="operator_user_id" remarks="数据创建人" type="BIGINT"/>
+      <column name="create_time" remarks="更新时间" type="DATETIME"/>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

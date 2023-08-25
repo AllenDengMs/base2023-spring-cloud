@@ -1,0 +1,35 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  <changeSet author="weBase2023" id="202307131649">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="t_role"/>
+      </not>
+    </preConditions>
+    <createTable tableName="t_role" remarks="角色表">
+      <column name="role_id" remarks="唯一标识符" type="VARCHAR(63)">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="role_name" remarks="角色名称" type="VARCHAR(63)"/>
+      <column name="display" remarks="是否展示" defaultValue="1" type="TINYINT"/>
+      <column name="update_time" remarks="创建时间" type="DATETIME"/>
+      <column name="create_time" remarks="更新时间" type="DATETIME"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="weBase2023" id="202307131649-2">
+    <preConditions onFail="MARK_RAN">
+      <tableExists tableName="t_role"/>
+    </preConditions>
+    <sql>
+      INSERT INTO t_role (role_id, role_name, update_time, create_time)
+      VALUES ('commonUser', '普通用户', NULL, NULL);
+      INSERT INTO t_role (role_id, role_name, update_time, create_time)
+      VALUES ('admin', '管理员', NULL, NULL);
+      INSERT INTO t_role (role_id, role_name, update_time, create_time, display)
+      VALUES ('super', '超级管理员', NULL, NULL, 0);
+    </sql>
+  </changeSet>
+</databaseChangeLog>

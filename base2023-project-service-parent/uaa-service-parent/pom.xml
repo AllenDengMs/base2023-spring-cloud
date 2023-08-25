@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>base2023-project-service-parent</artifactId>
+    <groupId>base2023.backend.cloud</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>uaa-service-parent</artifactId>
+  <description>User Account and Authentication(简称UAA，用户账号信息和认证授权)</description>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>login-model</module>
+    <module>user-service-model</module>
+
+    <module>user-service-client</module>
+
+    <module>user-service-server</module>
+    <module>login-server</module>
+  </modules>
+</project>

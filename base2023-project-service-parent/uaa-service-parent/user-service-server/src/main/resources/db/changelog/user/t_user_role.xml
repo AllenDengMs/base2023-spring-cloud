@@ -1,0 +1,51 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+  <changeSet author="weBase2023" id="202307131650">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="t_user_role"/>
+      </not>
+    </preConditions>
+    <createTable tableName="t_user_role" remarks="用户-角色表">
+      <column name="id" remarks="自增id" autoIncrement="true" type="BIGINT">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="user_id" remarks="外键,用户id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="role_id" remarks="角色id" type="VARCHAR(63)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="create_time" remarks="创建时间" type="DATETIME"/>
+    </createTable>
+  </changeSet>
+
+  <!-- 限制一个用户只能拥有一个角色 -->
+  <changeSet author="weBase2023" id="202307131650-2">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <indexExists indexName="uidx_t_user_role_user_id" tableName="t_user_role"/>
+      </not>
+    </preConditions>
+    <addUniqueConstraint tableName="t_user_role"
+      columnNames="user_id"
+      constraintName="uidx_t_user_role_role_id"/>
+  </changeSet>
+
+  <!-- 给超管给一个角色 -->
+  <changeSet author="weBase2023" id="202307131650-3">
+    <preConditions onFail="MARK_RAN">
+      <tableExists tableName="t_user_role"/>
+    </preConditions>
+    <sql>
+      INSERT INTO t_user_role (user_id, role_id, create_time)
+      VALUES (1, 'super', '2023-08-11 17:27:19');
+      INSERT INTO t_user_role (user_id, role_id, create_time)
+      VALUES (2, 'admin', '2023-08-11 17:27:19');
+      INSERT INTO t_user_role (user_id, role_id, create_time)
+      VALUES (3, 'commonUser', '2023-08-11 17:27:19');
+    </sql>
+  </changeSet>
+</databaseChangeLog>
