@@ -42,6 +42,25 @@ https://github.com/honghuangdc/soybean-admin
     </tr>
 </table>
 
+## 模块说明
+```lua
+base2023-dependencies -- 管理依赖版本项目
+
+spirng-cloud-project-parent -- 引入【管理依赖版本项目】来管理依赖版本，父项目
+│  ├─base2023-project-common-parent -- 工具包，父项目
+│  │  ├─we-database-spring-boot-starter -- 数据库相关可复用代码, 抽取到此项目
+│  │  ├─we-project-commons -- 其他可复用代码，工具包
+│  │  ├─we-web-spring-boot-starter -- web服务相关可复用代码, 抽取到此项目
+│  ├─base2023-project-service-parent -- 业务代码，父项目
+│  │  ├─gateway-server -- 网关，微服务
+│  │  ├─base2023-project-service-parent -- 父项目
+│  │  │  ├─login-model -- 从login-server中抽出来的公共实体，无业务逻辑
+│  │  │  ├─login-server -- 登陆/鉴权，微服务
+│  │  │  ├─user-service-client -- 对外暴露user-service-server接口的sdk
+│  │  │  ├─user-service-model -- 从user-service-server中抽出来的公共实体，无业务逻辑
+│  │  │  ├─user-service-server -- 用户中心，微服务
+```
+
 技术选型：
 
 | 软件    | 版本    | 后端框架                 | 版本             |
@@ -60,4 +79,4 @@ https://github.com/honghuangdc/soybean-admin
 
 | 版本                                    | 更新时间       |
 |---------------------------------------|------------|
-| [v1.0](_doc%2Flog%2Fv1.0_20230825.md) | 2023-08-24 |
+| [v1.0](_doc%2Flog%2Fv1.0_20230825.md) | 2023-08-25 |
