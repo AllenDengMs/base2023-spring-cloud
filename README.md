@@ -18,6 +18,7 @@
 
 ## 项目搭建
 准备运行环境: JDK17、Redis、Mysql8、Nacos。
+启动 gateway-server、login-server、user-service-server 三个微服务
 
 ## 前端项目：
 项目地址：
